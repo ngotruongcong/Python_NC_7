@@ -1,9 +1,8 @@
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import ttk
 from book_manager import BookManagerScreen  # Import class từ file book_manager.py
 from reader_manager import ReaderManagerScreen  # Import class từ file reader_manager.py
 from borrow_manager import BorrowManagerScreen  # Import class từ file borrow_manager.py
-from report_generator import generate_report
 from database import create_tables, initialize_database
 
 class LibraryManagementScreen:
