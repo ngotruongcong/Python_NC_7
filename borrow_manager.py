@@ -152,17 +152,17 @@ class BorrowManagerScreen:
             # Thông báo thành công
             messagebox.showinfo("Thành công", "Thêm thông tin mượn sách thành công.")
         except mysql.connector.IntegrityError:
-            messagebox.showerror("Lỗi")
+            messagebox.showerror("Lỗi", "Sai mã đọc giả hoặc mã sách")
         
 
     def sua_muon_tra(self):
-        ma_muon_tra = int(self.entries["Mã Mượn Trả"].get())  # Mã mượn trả
+        ma_muon_tra = int(self.entries["Mã mượn trả"].get())  # Mã mượn trả
         ma_sach = int(self.entries["Mã Sách"].get())  # Mã sách
-        ma_doc_gia = int(self.entries["Mã Độc Giả"].get())  # Mã độc giả
-        ngay_muon = self.entries["Ngày Mượn"].get_date()  # Ngày mượn
-        ngay_tra = self.entries["Ngày Trả"].get_date() if self.entries["Ngày Trả"].get() else None  # Ngày trả
-        ngay_tra_du_kien = self.entries["Ngày Trả Dự Kiến"].get_date()  # Ngày trả dự kiến
-        trang_thai = int(self.entries["Trạng Thái"].get())  # Trạng thái: 0 - chưa trả, 1 - đã trả
+        ma_doc_gia = int(self.entries["Mã đọc giả"].get())  # Mã độc giả
+        ngay_muon = self.entries["Ngày mượn"].get_date()  # Ngày mượn
+        ngay_tra = self.entries["Ngày trả"].get_date() if self.entries["Ngày trả"].get() else None  # Ngày trả
+        ngay_tra_du_kien = self.entries["Ngày trả dự kiến"].get_date()  # Ngày trả dự kiến
+        trang_thai = int(self.entries["Trạng thái"].get())  # Trạng thái: 0 - chưa trả, 1 - đã trả
 
         # Kiểm tra dữ liệu bắt buộc
         if not ma_sach or not ma_doc_gia or not ngay_muon or not ngay_tra_du_kien:
