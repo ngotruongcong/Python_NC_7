@@ -3,6 +3,7 @@ from tkinter import ttk
 from book_manager import BookManagerScreen  # Import class từ file book_manager.py
 from reader_manager import ReaderManagerScreen  # Import class từ file reader_manager.py
 from borrow_manager import BorrowManagerScreen  # Import class từ file borrow_manager.py
+from library_statistics import LibraryStatisticsScreen # Import class từ file library_statistics.py
 from database import create_tables, initialize_database
 
 class LibraryManagementScreen:
@@ -46,7 +47,7 @@ class LibraryManagementScreen:
             widget.grid_forget()
 
         # Khởi tạo màn hình quản lý sách và hiển thị nó
-        book_manager_screen = ReaderManagerScreen(self.root)
+        reader_manager_screen = ReaderManagerScreen(self.root)
 
     def manage_borrows(self):
          # Ẩn các widget hiện tại của main screen
@@ -54,10 +55,14 @@ class LibraryManagementScreen:
             widget.grid_forget()
 
         # Khởi tạo màn hình quản lý sách và hiển thị nó
-        book_manager_screen = BorrowManagerScreen(self.root)
+        borrow_manager_screen = BorrowManagerScreen(self.root)
 
     def generate_report(self):
-        pass
+        for widget in self.dashboard_frame.winfo_children():
+            widget.grid_forget()
+
+        # Khởi tạo màn hình quản lý sách và hiển thị nó
+        statics_manager_screen = LibraryStatisticsScreen(self.root)
 
 if __name__ == "__main__":
     root = tk.Tk()
