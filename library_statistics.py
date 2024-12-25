@@ -11,8 +11,11 @@ class LibraryStatisticsScreen:
     def __init__(self, root):
         self.root = root
         self.root.title("Thống kê sách")
+        self.create_connection()
         # Setup UI components
         self.setup_ui()
+        self.get_statistics()
+        self.get_books_details()
 
     def setup_ui(self):
         
@@ -113,119 +116,113 @@ class LibraryStatisticsScreen:
         self.cursor = self.conn.cursor()
         self.cursor.execute("CREATE DATABASE IF NOT EXISTS library")
         self.cursor.execute("USE library")
-        return self.conn
         
     def get_statistics(self):
-        conn = self.create_connection()
-        if conn:
-            cursor = conn.cursor()
-            try:
-                # Tổng số lượng sách
-                cursor.execute("SELECT SUM(so_luong) FROM Sach")
-                total_books = cursor.fetchone()[0] or 0
-                self.lbl_total_books.config(text=total_books)
+        try:
+            # Tổng số lượng sách
+            self.cursor.execute("SELECT SUM(so_luong) FROM Sach")
+            total_books = self.cursor.fetchone()[0] or 0
+            self.lbl_total_books.config(text=total_books)
 
-                # Tổng số độc giả
-                cursor.execute("SELECT COUNT(*) FROM Doc_gia")
-                total_readers = cursor.fetchone()[0] or 0
-                self.lbl_total_readers.config(text=total_readers)
+            # Tổng số độc giả
+            self.cursor.execute("SELECT COUNT(*) FROM Doc_gia")
+            total_readers = self.cursor.fetchone()[0] or 0
+            self.lbl_total_readers.config(text=total_readers)
 
-                # Số sách mượn nhưng chưa trả
-                cursor.execute("SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NULL")
-                books_not_returned_count = cursor.fetchone()[0] or 0
-                remaining_books = total_books - books_not_returned_count
-                self.lbl_remaining_books.config(text=remaining_books)
+            # Số sách mượn nhưng chưa trả
+            self.cursor.execute("SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NULL")
+            books_not_returned_count = self.cursor.fetchone()[0] or 0
+            remaining_books = total_books - books_not_returned_count
+            self.lbl_remaining_books.config(text=remaining_books)
 
-                # Tỉ lệ trả sách đúng hạn
-                cursor.execute(""" 
-                    SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NOT NULL AND ngay_tra <= ngay_tra_du_kien
-                """)
-                on_time_returns = cursor.fetchone()[0] or 0
-                cursor.execute("SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NOT NULL")
-                total_returns = cursor.fetchone()[0] or 1  # tránh chia cho 0
-                return_rate = (on_time_returns / total_returns) * 100
-                self.lbl_return_rate.config(text=f"{return_rate:.2f}%")
+            # Tỉ lệ trả sách đúng hạn
+            self.cursor.execute(""" 
+                SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NOT NULL AND ngay_tra <= ngay_tra_du_kien
+            """)
+            on_time_returns = self.cursor.fetchone()[0] or 0
+            self.cursor.execute("SELECT COUNT(*) FROM Muon_tra WHERE ngay_tra IS NOT NULL")
+            total_returns = self.cursor.fetchone()[0] or 1  # tránh chia cho 0
+            return_rate = (on_time_returns / total_returns) * 100
+            self.lbl_return_rate.config(text=f"{return_rate:.2f}%")
 
-                # Sách đến hẹn mà chưa trả
-                cursor.execute(""" 
-                    SELECT Sach.ten_sach, Doc_gia.ten_doc_gia, Muon_tra.ngay_muon, Muon_tra.ngay_tra_du_kien 
-                    FROM Muon_tra
-                    JOIN Sach ON Muon_tra.ma_sach = Sach.ma_sach
-                    JOIN Doc_gia ON Muon_tra.ma_doc_gia = Doc_gia.ma_doc_gia
-                    WHERE Muon_tra.ngay_tra IS NULL AND Muon_tra.ngay_tra_du_kien < %s
-                """, (datetime.now().strftime('%Y-%m-%d'),))
-                books_due_not_returned = cursor.fetchall()
-                self.update_treeview(self.tree_books_due_not_returned, books_due_not_returned)
-                self.lbl_books_due_not_returned_count.config(text=f"Số lượng: {len(books_due_not_returned)}")
+            # Sách đến hẹn mà chưa trả
+            self.cursor.execute(""" 
+                SELECT Sach.ten_sach, Doc_gia.ten_doc_gia, Muon_tra.ngay_muon, Muon_tra.ngay_tra_du_kien 
+                FROM Muon_tra
+                JOIN Sach ON Muon_tra.ma_sach = Sach.ma_sach
+                JOIN Doc_gia ON Muon_tra.ma_doc_gia = Doc_gia.ma_doc_gia
+                WHERE Muon_tra.ngay_tra IS NULL AND Muon_tra.ngay_tra_du_kien < %s
+            """, (datetime.now().strftime('%Y-%m-%d'),))
+            books_due_not_returned = self.cursor.fetchall()
+            self.update_treeview(self.tree_books_due_not_returned, books_due_not_returned)
+            self.lbl_books_due_not_returned_count.config(text=f"Số lượng: {len(books_due_not_returned)}")
 
-                # Sách chưa trả
-                cursor.execute(""" 
-                    SELECT Sach.ten_sach, Doc_gia.ten_doc_gia, Muon_tra.ngay_muon, Muon_tra.ngay_tra_du_kien 
-                    FROM Muon_tra
-                    JOIN Sach ON Muon_tra.ma_sach = Sach.ma_sach
-                    JOIN Doc_gia ON Muon_tra.ma_doc_gia = Doc_gia.ma_doc_gia
-                    WHERE Muon_tra.ngay_tra IS NULL
-                """)
-                books_not_returned = cursor.fetchall()
-                self.update_treeview(self.tree_books_not_returned, books_not_returned)
-                self.lbl_books_not_returned_count.config(text=f"Số lượng: {len(books_not_returned)}")
+            # Sách chưa trả
+            self.cursor.execute(""" 
+                SELECT Sach.ten_sach, Doc_gia.ten_doc_gia, Muon_tra.ngay_muon, Muon_tra.ngay_tra_du_kien 
+                FROM Muon_tra
+                JOIN Sach ON Muon_tra.ma_sach = Sach.ma_sach
+                JOIN Doc_gia ON Muon_tra.ma_doc_gia = Doc_gia.ma_doc_gia
+                WHERE Muon_tra.ngay_tra IS NULL
+            """)
+            books_not_returned = self.cursor.fetchall()
+            self.update_treeview(self.tree_books_not_returned, books_not_returned)
+            self.lbl_books_not_returned_count.config(text=f"Số lượng: {len(books_not_returned)}")
 
-                # Sách được mượn nhiều nhất
-                cursor.execute(""" 
-                    SELECT ten_sach 
-                    FROM Sach
-                    JOIN Muon_tra ON Sach.ma_sach = Muon_tra.ma_sach
-                    GROUP BY ten_sach
-                    ORDER BY COUNT(Muon_tra.ma_sach) DESC
-                    LIMIT 1
-                """)
-                most_borrowed_book = cursor.fetchone()
-                self.lbl_most_borrowed_book_val.config(text=most_borrowed_book[0] if most_borrowed_book else "Không có dữ liệu")
+            # Sách được mượn nhiều nhất
+            self.cursor.execute(""" 
+                SELECT ten_sach 
+                FROM Sach
+                JOIN Muon_tra ON Sach.ma_sach = Muon_tra.ma_sach
+                GROUP BY ten_sach
+                ORDER BY COUNT(Muon_tra.ma_sach) DESC
+                LIMIT 1
+            """)
+            most_borrowed_book = self.cursor.fetchone()
+            self.lbl_most_borrowed_book_val.config(text=most_borrowed_book[0] if most_borrowed_book else "Không có dữ liệu")
 
-                # Độc giả tích cực nhất
-                cursor.execute(""" 
-                    SELECT ten_doc_gia 
-                    FROM Doc_gia
-                    JOIN Muon_tra ON Doc_gia.ma_doc_gia = Muon_tra.ma_doc_gia
-                    GROUP BY ten_doc_gia
-                    ORDER BY COUNT(Muon_tra.ma_doc_gia) DESC
-                    LIMIT 1
-                """)
-                most_active_reader = cursor.fetchone()
-                self.lbl_most_active_reader_val.config(text=most_active_reader[0] if most_active_reader else "Không có dữ liệu")
+            # Độc giả tích cực nhất
+            self.cursor.execute(""" 
+                SELECT ten_doc_gia 
+                FROM Doc_gia
+                JOIN Muon_tra ON Doc_gia.ma_doc_gia = Muon_tra.ma_doc_gia
+                GROUP BY ten_doc_gia
+                ORDER BY COUNT(Muon_tra.ma_doc_gia) DESC
+                LIMIT 1
+            """)
+            most_active_reader = self.cursor.fetchone()
+            self.lbl_most_active_reader_val.config(text=most_active_reader[0] if most_active_reader else "Không có dữ liệu")
 
-            except Exception as e:
-                messagebox.showerror("Query Error", f"Lỗi khi thực hiện truy vấn:\n{e}")
-            finally:
-                cursor.close()
-                conn.close()
+        except Exception as e:
+            messagebox.showerror("Query Error", f"Lỗi khi thực hiện truy vấn:\n{e}")
+        # finally:
+        #     self.cursor.close()
+        #     self.conn.close()
     def get_books_details(self):
-        conn = self.create_connection()  # Đổi tên hàm kết nối
-        if conn:
-            cursor = conn.cursor()
-            try:
-                cursor.execute("""
-                    SELECT Sach.ten_sach, SUM(Sach.so_luong) AS total_books, 
-                        SUM(CASE WHEN Muon_tra.ngay_tra IS NULL THEN 1 ELSE 0 END) AS books_borrowed
-                    FROM Sach
-                    LEFT JOIN Muon_tra ON Sach.ma_sach = Muon_tra.ma_sach
-                    GROUP BY Sach.ten_sach
-                """)
-                books_details = cursor.fetchall()
+        
+        try:
+            self.cursor.execute("""
+                SELECT Sach.ten_sach, SUM(Sach.so_luong) AS total_books, 
+                    SUM(CASE WHEN Muon_tra.ngay_tra IS NULL THEN 1 ELSE 0 END) AS books_borrowed
+                FROM Sach
+                LEFT JOIN Muon_tra ON Sach.ma_sach = Muon_tra.ma_sach
+                GROUP BY Sach.ten_sach
+            """)
+            books_details = self.cursor.fetchall()
 
-                # Xóa các mục cũ trong bảng
-                for item in self.tree_books_details.get_children():
-                    self.tree_books_details.delete(item)
+            # Xóa các mục cũ trong bảng
+            for item in self.tree_books_details.get_children():
+                self.tree_books_details.delete(item)
 
-                for book, total, borrowed in books_details:
-                    remaining = total - borrowed  # Số sách còn lại
-                    self.tree_books_details.insert("", tk.END, values=(book, total, borrowed, remaining))
+            for book, total, borrowed in books_details:
+                remaining = total - borrowed  # Số sách còn lại
+                self.tree_books_details.insert("", tk.END, values=(book, total, borrowed, remaining))
 
-            except Exception as e:
-                messagebox.showerror("Query Error", f"Lỗi khi thực hiện truy vấn:\n{e}")
-            finally:
-                cursor.close()
-                conn.close()
+        except Exception as e:
+            messagebox.showerror("Query Error", f"Lỗi khi thực hiện truy vấn:\n{e}")
+        # finally:
+        #     self.cursor.close()
+        #     self.conn.close()
 
     def update_treeview(self, treeview, data):
         for item in treeview.get_children():
@@ -286,6 +283,4 @@ class LibraryStatisticsScreen:
 if __name__ == "__main__":
     root = tk.Tk()
     app = LibraryStatisticsScreen(root)
-    app.get_statistics()
-    app.get_books_details()
     root.mainloop()
