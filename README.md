@@ -1,11 +1,7 @@
 # Nhóm Python_NC_7
 ---
 
-# Ứng dụng Quản lý Thư viện
-
-<a href="https://github.com/HaUI-AnodisO/Control-Vaccination-Services/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Bug Report ⚠️</a>
-<a href="https://github.com/HaUI-AnodisO/Control-Vaccination-Services/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=">Request Feature 👩‍💻</a>
- 
+# Ứng dụng Quản lý Thư viện 
 
 Link thuyết trình Canva kết thúc môn [link](https://www.canva.com/design/DAGY-gPSgIw/az2fo9xRoZm0WQ4q92iTyA/edit?utm_content=DAGY-gPSgIw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
@@ -18,8 +14,8 @@ Link thuyết trình Canva kết thúc môn [link](https://www.canva.com/design/
 4. [Cấu Trúc Thư Mục](#cấu-trúc-thư-mục)
 5. [Thiết kế Database](#thiết-kế-database)
 6. [Hướng Dẫn Cài Đặt](#hướng-dẫn-cài-đặt)
-    - [📋 Yêu Cầu - Prerequisites](#yêu-cầu-📋)
-    - [🔨 Cài Đặt](#🔨-cài-đặt)
+    - [📋 Yêu Cầu - Prerequisites](#yêu-cầu-)
+    - [🔨 Cài Đặt](#-cài-đặt)
 7. [🙌 Đóng Góp](#-đóng-góp-cho-dự-án)
 
 
@@ -161,10 +157,10 @@ python main.py
 ---
 ## 🙌 Đóng góp cho dự án
 
-<a href="https://github.com/Anodis108/HAUI-HITAnodisO/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Bug Report ⚠️
+<a href="https://github.com/ngotruongcong/Python_NC_7/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=">Bug Report ⚠️
 </a>
 
-<a href="https://github.com/Anodis108/HAUI-HITAnodisO/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=">Feature Request 👩‍💻</a>
+<a href="https://github.com/ngotruongcong/Python_NC_7/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=">Feature Request 👩‍💻</a>
 
 Nếu bạn muốn đóng góp cho dự án, hãy đọc [CONTRIBUTING.md](.github/CONTRIBUTING.md) để biết thêm chi tiết.
 
