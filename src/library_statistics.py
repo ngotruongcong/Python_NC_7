@@ -104,7 +104,7 @@ class LibraryStatisticsScreen:
         self.tree_books_details.column("Còn lại", anchor="center")
 
         # Export button
-        tk.Button(self.frame_statics, text="Export to Excel", command=lambda: print("Export to Excel")).grid(row=12, column=0, columnspan=4, pady=(10, 20), sticky="n")
+        tk.Button(self.frame_statics, text="Export to Excel", command=self.export_to_excel).grid(row=12, column=0, columnspan=4, pady=(10, 20), sticky="n")
 
     def create_connection(self):
         # Kết nối đến MySQL server và tạo cơ sở dữ liệu nếu chưa tồn tại
@@ -274,9 +274,6 @@ class LibraryStatisticsScreen:
                 sheet.cell(row=row_idx, column=col_idx, value=value)
     def tro_ve(self):
         self.frame_statics.destroy()
-        # Xóa các widget hiện tại của màn hình quản lý sách
-        # for widget in self.frame_statics.winfo_children():
-        #     widget.grid_forget()
 
         # Quay lại màn hình chính
         from main import LibraryManagementScreen  # Nhập trong hàm để tránh vòng nhập
