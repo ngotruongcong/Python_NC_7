@@ -13,23 +13,25 @@ Link thuyết trình Canva kết thúc môn [link](https://www.canva.com/design/
 ## 🔎 Danh Mục
 
 1. [Giới Thiệu, Demo sản phẩm](#Giới-Thiệu)
-2. [Chức Năng Chính](#chức-năng-chính)
+2. [Chức Năng Chính](#chức-năng)
 3. [Tổng Quan Hệ Thống](#-tổng-quan-hệ-thống)
 4. [Cấu Trúc Thư Mục](#cấu-trúc-thư-mục)
 5. [Thiết kế Database](#thiết-kế-database)
 6. [Hướng Dẫn Cài Đặt](#hướng-dẫn-cài-đặt)
     - [📋 Yêu Cầu - Prerequisites](#yêu-cầu-📋)
     - [🔨 Cài Đặt](#🔨-cài-đặt)
-7. [CI/CD](#cicd)
-8. [🙌 Đóng Góp](#-đóng-góp-cho-dự-án)
-9. [📝 License](#-license)
+7. [🙌 Đóng Góp](#-đóng-góp-cho-dự-án)
+
 
 
 ---
 ## Thành  viên
 
--   Phạm Đăng Đông: dong10082003@gmail.com
--  
+-   Phạm Đăng Đông 2021603320 dong10082003@gmail.com
+- Ngô Trường Công 2021602766 congn2213@gmail.com
+- Nguyễn Kỳ Phương Bắc 2021602778 Bacnguyenky@gmail.com
+- Phan Mạnh Duy 2021600289 phanmanhduy2003333@gmail.com
+- Nguyễn Quế Phú 2021602920 phungoanhien1@gmail.com
 
 ## Giới Thiệu
 Đây là Sản phẩm nhóm cuối kỳ cho môn Python Nâng cao với khả năng quản lý sách cho thư viện
