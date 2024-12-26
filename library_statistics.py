@@ -5,13 +5,14 @@ from tkinter.filedialog import asksaveasfilename
 import mysql.connector
 from datetime import datetime
 import openpyxl
-
+from database import get_db_connection
 
 class LibraryStatisticsScreen:
     def __init__(self, root):
         self.root = root
         self.root.title("Thống kê sách")
-        self.create_connection()
+        self.conn = get_db_connection()
+        self.cursor = self.conn.cursor()
         # Setup UI components
         self.setup_ui()
         self.get_statistics()
@@ -272,9 +273,10 @@ class LibraryStatisticsScreen:
             for col_idx, value in enumerate(values, start=1):
                 sheet.cell(row=row_idx, column=col_idx, value=value)
     def tro_ve(self):
+        self.frame_statics.destroy()
         # Xóa các widget hiện tại của màn hình quản lý sách
-        for widget in self.frame_statics.winfo_children():
-            widget.grid_forget()
+        # for widget in self.frame_statics.winfo_children():
+        #     widget.grid_forget()
 
         # Quay lại màn hình chính
         from main import LibraryManagementScreen  # Nhập trong hàm để tránh vòng nhập

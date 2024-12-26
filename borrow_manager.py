@@ -3,41 +3,17 @@ from tkinter import messagebox, ttk
 import mysql.connector
 from tkcalendar import DateEntry
 from tkinter.font import Font
+from database import get_db_connection
 class BorrowManagerScreen:
     def __init__(self, root):
         self.root = root
         self.root.title("Quản lý Mượn")
         self.root.configure(bg="#babfbb")
-        self.create_connection()
+        self.conn = get_db_connection()
+        self.cursor = self.conn.cursor()
         self.create_gui()
         self.load_muon_tra()
         
-    def create_connection(self):
-        # Kết nối đến MySQL server và tạo cơ sở dữ liệu nếu chưa tồn tại
-        self.conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="dong10082003",
-            port="3306"
-        )
-        self.cursor = self.conn.cursor()
-        self.cursor.execute("CREATE DATABASE IF NOT EXISTS library")
-        self.cursor.execute("USE library")
-        
-        # Tạo bảng nếu chưa tồn tại
-        self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS Muon_tra (
-                ma_muon_tra INT PRIMARY KEY,
-                ma_sach INT,
-                ma_doc_gia INT,
-                ngay_muon DATE,
-                ngay_tra DATE,
-                ngay_tra_du_kien DATE,
-                trang_thai BIT DEFAULT 0,
-                FOREIGN KEY (ma_sach) REFERENCES Sach(ma_sach),
-                FOREIGN KEY (ma_doc_gia) REFERENCES Doc_gia(ma_doc_gia)
-            );
-        """)
     def create_gui(self):
             # Giao diện nhập liệu
             self.style = ttk.Style()
@@ -204,9 +180,10 @@ class BorrowManagerScreen:
         self.update_treeview(rows)
 
     def tro_ve(self):
-        # Xóa các widget hiện tại của màn hình quản lý sách
-        for widget in self.frame_borrow_manager.winfo_children():
-            widget.grid_forget()
+        self.frame_borrow_manager.destroy()
+        # # Xóa các widget hiện tại của màn hình quản lý sách
+        # for widget in self.frame_borrow_manager.winfo_children():
+        #     widget.grid_forget()
 
         # Quay lại màn hình chính
         from main import LibraryManagementScreen  # Nhập trong hàm để tránh vòng nhập

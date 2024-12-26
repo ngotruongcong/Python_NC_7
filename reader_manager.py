@@ -3,38 +3,17 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from tkcalendar import DateEntry
 from tkinter.font import Font
-
+from database import get_db_connection
 class ReaderManagerScreen:
     def __init__(self, root):
         self.root = root
         self.root.title("Quản lý đọc giả")
         self.root.configure(bg="#babfbb")
-        self.create_connection()
+        self.conn = get_db_connection()
+        self.cursor = self.conn.cursor()
         self.create_gui()
         self.load_doc_gia()
 
-    def create_connection(self):
-        # Kết nối đến MySQL server và tạo cơ sở dữ liệu nếu chưa tồn tại
-        self.conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="dong10082003",
-            port="3306"
-        )
-        self.cursor = self.conn.cursor()
-        self.cursor.execute("CREATE DATABASE IF NOT EXISTS library")
-        self.cursor.execute("USE library")
-        
-        # Tạo bảng nếu chưa tồn tại
-        self.cursor.execute("""
-            CREATE TABLE IF NOT EXISTS Doc_gia (
-                ma_doc_gia INT PRIMARY KEY,
-                ten_doc_gia VARCHAR(255) NOT NULL,
-                ngay_sinh DATE,
-                email VARCHAR(255),
-                sdt VARCHAR(15)
-            );
-        """)
 
     def create_gui(self):
         # Giao diện nhập liệu
@@ -177,9 +156,10 @@ class ReaderManagerScreen:
         self.update_treeview(rows)
 
     def tro_ve(self):
+        self.frame_reader_manager.destroy()
         # Xóa các widget hiện tại của màn hình quản lý sách
-        for widget in self.frame_reader_manager.winfo_children():
-            widget.grid_forget()
+        # for widget in self.frame_reader_manager.winfo_children():
+        #     widget.grid_forget()
 
         # Quay lại màn hình chính
         from main import LibraryManagementScreen  # Nhập trong hàm để tránh vòng nhập

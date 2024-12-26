@@ -7,16 +7,17 @@ def initialize_database():
         connection = mysql.connector.connect(
             user=MYSQL_CONFIG["user"],
             password=MYSQL_CONFIG["password"],
-            host=MYSQL_CONFIG["host"]
+            host=MYSQL_CONFIG["host"],
+            port=MYSQL_CONFIG["port"]
         )
         cursor = connection.cursor()
 
         # Tạo database nếu chưa tồn tại
-        cursor.execute("CREATE DATABASE IF NOT EXISTS library_management;")
-        print("Database 'library_management' đã được tạo (nếu chưa tồn tại).")
-
-        cursor.close()
-        connection.close()
+        cursor.execute(f'''CREATE DATABASE IF NOT EXISTS {MYSQL_CONFIG["database"]};''')
+        cursor.execute(f'''USE {MYSQL_CONFIG["database"]}''')
+        print(f'''Database '{MYSQL_CONFIG["database"]}' đã được tạo (nếu chưa tồn tại).''')
+        create_tables()
+        
     except mysql.connector.Error as err:
         print(f"Lỗi khi tạo database: {err}")
 
@@ -72,9 +73,9 @@ def create_tables():
         print("Các bảng đã được tạo thành công.")
     except mysql.connector.Error as err:
         print(f"Lỗi khi tạo bảng: {err}")
-    finally:
-        cursor.close()
-        connection.close()
+    # finally:
+    #     cursor.close()
+    #     connection.close()
 
 if __name__ == "__main__":
     initialize_database()  # Tạo database nếu chưa có
