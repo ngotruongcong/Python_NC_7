@@ -83,7 +83,6 @@ Mô hình hệ thống bao gồm các công nghệ:
 │
 ├───docs
 │       database.png
-│
 └───src
     │   book_manager.py
     │   borrow_manager.py
