@@ -3,7 +3,7 @@
 
 # Ứng dụng Quản lý Thư viện 
 
-Link thuyết trình Canva kết thúc môn [link](https://www.canva.com/design/DAGY-gPSgIw/az2fo9xRoZm0WQ4q92iTyA/edit?utm_content=DAGY-gPSgIw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+Link thuyết trình Canva kết thúc môn [link](https://www.canva.com/design/DAGaacWdVLw/hT9ZIZySd107W8ar1JLNhQ/edit)
 
 ---
 ## 🔎 Danh Mục
